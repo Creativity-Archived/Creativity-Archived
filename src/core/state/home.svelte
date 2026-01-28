@@ -1,31 +1,23 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
     import TopBar from '@src/core/components/topBar.svelte';
     import ProjectItem from '@src/webpack/frame/items/projectItem.svelte';
+    import { fetchMods, type ProjectItemProps } from '@src/core/api/github';
+
+    let projects: ProjectItemProps[] = [];
+
+    onMount(async () => {
+        projects = await fetchMods();
+    });
 </script>
 
 <main>
     <TopBar current="Home" />
     
     <div class="mainContainer">
-        <ProjectItem
-            imageUrl="/images/icons/website/Creativity Archived - white.png"
-            imageAlt="Creativity Archived"
-            
-            title="Creativity Archived"
-            description="Sharing your mods, your way."
-            madeBy="Daveberry Cricket Blueson"
-            
-            madeByURL="https://daveberry.netlify.app/"
-            infoUrl="https://github.com/Creativity-Archived/"
-            downloadUrl="https://github.com/Creativity-Archived/Universe-Engine"
-            
-            githubUrl="https://github.com/Creativity-Archived/"
-            discordUrl="https://discord.gg/?????"
-            
-            openSource="yes"
-            canMessWithSystem="no"
-            licenseUsed="MIT"
-        />
+        {#each projects as project}
+            <ProjectItem {...project} />
+        {/each}
     </div>
 </main>
 
