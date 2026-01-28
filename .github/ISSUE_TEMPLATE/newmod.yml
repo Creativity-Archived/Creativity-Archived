@@ -24,8 +24,8 @@ body:
     attributes:
       label: "Is it open source?"
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
   
@@ -33,7 +33,7 @@ body:
     attributes:
       label: "Does it mess with your system?"
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
