@@ -10,7 +10,7 @@
 
     <div class="right">
         <Redirect name="Home" goto="/" />
-        <Redirect name="Submit Mod" goto="https://github.com/Creativity-Archived/Creativity-Archived/" />
+        <Redirect name="Submit Mod" goto="https://github.com/Creativity-Archived/Creativity-Archived/issues" />
         <Redirect name="Information" goto="/info" />
     </div>
 </main>

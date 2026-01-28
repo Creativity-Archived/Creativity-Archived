@@ -5,4 +5,6 @@
 </div>
 
 <p>Don't really know how to describe this website for now. Here's an image.</p>
-<img src="docs/preview.png">
+<img src="readme/preview.png">
+
+<p>If you wanna submit your mods, head on over to the <a href="https://github.com/Creativity-Archived/Creativity-Archived/issues"> issues tab </a>. </p>
