@@ -15,6 +15,7 @@
     
     export let openSource: string;
     export let canMessWithSystem: string;
+    export let licenseUsed: string;
 
     import Tag from '@src/webpack/misc/tags.svelte';
 </script>
@@ -32,6 +33,7 @@
     
     <Tag openSource={openSource}/>
     <Tag messWithSystem={canMessWithSystem}/>
+    <Tag license={licenseUsed}/>
     
     <div class="bottom">
         <div class="left">

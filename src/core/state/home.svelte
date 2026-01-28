@@ -8,22 +8,23 @@
     
     <div class="mainContainer">
         <ProjectItem
-            imageUrl="https://avatars.githubusercontent.com/u/216927230?s=200&v=4"
-            imageAlt="Universe Engine"
+            imageUrl="/images/icons/website/Creativity Archived - white.png"
+            imageAlt="Creativity Archived"
             
-            title="Universe Engine"
-            description="Psych engine if it were more customiazable and cleaner."
-            madeBy="Universe Engine Team"
+            title="Creativity Archived"
+            description="Sharing your mods, your way."
+            madeBy="Daveberry Cricket Blueson"
             
-            madeByURL="https://github.com/Team-UniverseEngine/"
-            infoUrl="https://github.com/Team-UniverseEngine/Universe-Engine"
-            downloadUrl="https://github.com/Team-UniverseEngine/Universe-Engine/releases"
+            madeByURL="https://daveberry.netlify.app/"
+            infoUrl="https://github.com/Creativity-Archived/"
+            downloadUrl="https://github.com/Creativity-Archived/Universe-Engine"
             
-            githubUrl="https://github.com/Team-UniverseEngine/Universe-Engine"
-            discordUrl="https://discord.gg/RaHmP5fgyA"
+            githubUrl="https://github.com/Creativity-Archived/"
+            discordUrl="https://discord.gg/?????"
             
             openSource="yes"
-            canMessWithSystem="yes"
+            canMessWithSystem="no"
+            licenseUsed="MIT"
         />
     </div>
 </main>
