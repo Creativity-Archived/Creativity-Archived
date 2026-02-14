@@ -1,0 +1,19 @@
+{
+    "imageUrl": "https://vschar-official.com/images/vschar_cover.png",
+    "imageAlt": "VS. Char (Alternatively \"Char's Funky Night Out\")",
+    
+    "title": "VS. Char (Alternatively \"Char's Funky Night Out\")",
+    "description": "VS. Char is yet another OC mod, that aims to just have some goofy good ol' fun! with maybe a little bit of a story!",
+    "madeBy": "CharGoldenYT",
+
+    "madeByURL": "https://info.vschar-official.com/",
+    "infoUrl": "https://github.com/CharGolden-Games/VSChar-Universe-Engine",
+    "downloadUrl": "https://github.com/CharGolden-Games/VSChar-Universe-Engine/releases",
+    
+    "githubUrl": "https://github.com/CharGolden-Games/VSChar-Universe-Engine",
+    "discordUrl": "https://discord.vschar-official.com/",
+    
+    "openSource": "yes",
+    "canMessWithSystem": "no",
+    "licenseUsed": "???"
+}
