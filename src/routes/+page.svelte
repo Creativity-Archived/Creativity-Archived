@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { browser } from "$app/environment";
     import TopBar from "@src/webpack/components/topBar.svelte";
     import ProjectItem from "@src/webpack/frame/items/projectItem.svelte";
     import type {
@@ -7,9 +8,12 @@
         ProjectItemProps,
     } from "@src/lib/types/github";
 
+    const nsfwStorageKey = "showNsfw";
     let projects: RepoProjectResult[] = [];
+    let visibleProjects: RepoProjectResult[] = [];
     let loading = true;
     let loadError = "";
+    let showNsfw = false;
 
     const fallbackProject = (project: RepoProjectResult): ProjectItemProps => ({
         imageUrl: "",
@@ -35,6 +39,10 @@
     });
 
     onMount(async () => {
+        if (browser) {
+            showNsfw = localStorage.getItem(nsfwStorageKey) === "on";
+        }
+
         try {
             const response = await fetch("/api/github");
             if (!response.ok) {
@@ -51,6 +59,10 @@
             loading = false;
         }
     });
+
+    $: visibleProjects = showNsfw
+        ? projects
+        : projects.filter((project) => project.project?.nsfw !== "yes");
 </script>
 
 <main>
@@ -64,7 +76,7 @@
         {:else if projects.length === 0}
             <span class="status">No projects found.</span>
         {:else}
-            {#each projects as project}
+            {#each visibleProjects as project}
                 <ProjectItem
                     {...project.project ?? fallbackProject(project)}
                     repoUrl={project.repoUrl}
