@@ -77,17 +77,17 @@
                 <div class="actions">
                     <div class="left">
                         {#if downloadUrl}
-                            <a class="actionButton" href={downloadUrl}
-                                >Download</a
-                            >
+                            <a class="actionButton" href={downloadUrl} target="_blank">
+                                Download
+                            </a>
                         {/if}
                         {#if infoUrl}
-                            <a class="actionButton" href={infoUrl}>Info</a>
+                            <a class="actionButton" href={infoUrl} target="_blank">Info</a>
                         {/if}
                     </div>
                     <div class="right">
                         {#if githubUrl}
-                            <a href={githubUrl}>
+                            <a href={githubUrl} target="_blank">
                                 <img
                                     src="/images/icons/social/github.svg"
                                     class="social"
@@ -97,7 +97,7 @@
                             </a>
                         {/if}
                         {#if discordUrl}
-                            <a href={discordUrl}>
+                            <a href={discordUrl} target="_blank">
                                 <img
                                     src="/images/icons/social/discord.svg"
                                     class="social"

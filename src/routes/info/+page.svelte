@@ -29,7 +29,7 @@
                 </p>
                 
                 <p>
-                    If you wish to check out the project and the code, <a href="https://github.com/Creativity-Archived/Creativity-Archived">click here for the GitHub repository.</a> Creativity Archived is part of Pinpoint Tools's organization.
+                    If you wish to check out the project and the code, <a href="https://github.com/Creativity-Archived/Creativity-Archived" target="_blank">click here for the GitHub repository.</a> Creativity Archived is part of Pinpoint Tools's organization.
                 </p>
                 
                 <div class="license">

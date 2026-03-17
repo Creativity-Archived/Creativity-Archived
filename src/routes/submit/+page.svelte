@@ -69,6 +69,11 @@
             {#if submitStatus}
                 <div class="status">{submitStatus}</div>
             {/if}
+            
+            <h1>Remember:</h1>
+            <p>
+                Make sure the repository has <code>.creativity-archived</code> and has the required files needed, such as <code>banner.png</code>, <code>logo.png</code>, <code>config.json</code>, and <code>readme.md</code>. If you're confused, <a href="https://github.com/Creativity-Archived/test-repo" target="_blank">check this repository</a>.
+            </p>
         </div>
     </div>
 </main>
@@ -105,5 +110,9 @@
         margin-top: 10px;
         font-size: 12px;
         color: rgba(200, 200, 200, 1);
+    }
+    
+    code {
+        background-color: rgba(20, 20, 20, 1);
     }
 </style>

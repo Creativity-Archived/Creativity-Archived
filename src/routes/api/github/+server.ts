@@ -29,8 +29,7 @@ const REQUIRED_FILES = [
   "readme.md",
 ] as const;
 const MARKER_DIR = ".creativity-archived";
-const DEFAULT_LIST_URL =
-  "https://raw.githubusercontent.com/Creativity-Archived/.github/refs/heads/main/mods.txt";
+const DEFAULT_LIST_URL = "https://raw.githubusercontent.com/Creativity-Archived/.github/refs/heads/main/mods.txt";
 
 type RepoParts = {
   owner: string;

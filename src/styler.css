@@ -6,6 +6,9 @@
 * {
     font-family: JetBrainsMono;
     color: white;
+    
+    scrollbar-color: #2C2C2C #1B1B1B;
+    scrollbar-width: thin;
 }
 
 body {
