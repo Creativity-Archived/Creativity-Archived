@@ -1,4 +1,5 @@
 import { json } from "@sveltejs/kit";
+import { env } from "$env/dynamic/private";
 import type {
   ProjectItemProps,
   RepoProjectResult,
@@ -85,11 +86,28 @@ const parseRepoUrl = (repoUrl: string): RepoParts | null => {
   }
 };
 
+const buildGithubHeaders = (): Record<string, string> => {
+  const headers: Record<string, string> = {
+    Accept: "application/vnd.github+json",
+  };
+
+  if (env.GITHUB_API) {
+    headers.Authorization = `Bearer ${env.GITHUB_API}`;
+  }
+
+  return headers;
+};
+
 const fetchRepoInfo = async (
   owner: string,
   repo: string,
 ): Promise<RepoInfo> => {
-  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+  const response = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}`,
+    {
+      headers: buildGithubHeaders(),
+    },
+  );
   if (!response.ok) {
     throw new Error(`Failed to fetch repo info (${response.status})`);
   }
@@ -105,6 +123,7 @@ const fetchContents = async (
   const pathSegment = path ? `/${path}` : "";
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents${pathSegment}?ref=${branch}`,
+    { headers: buildGithubHeaders() },
   );
   if (!response.ok) {
     throw new Error(`Missing ${path} (${response.status})`);
