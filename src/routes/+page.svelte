@@ -1,12 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import TopBar from "@src/core/components/topBar.svelte";
+    import TopBar from "@src/webpack/components/topBar.svelte";
     import ProjectItem from "@src/webpack/frame/items/projectItem.svelte";
-    import {
-        fetchMods,
-        type RepoProjectResult,
-        type ProjectItemProps,
-    } from "@src/core/api/github";
+    import type {
+        RepoProjectResult,
+        ProjectItemProps,
+    } from "@src/lib/types/github";
 
     let projects: RepoProjectResult[] = [];
     let loading = true;
@@ -34,7 +33,12 @@
 
     onMount(async () => {
         try {
-            projects = await fetchMods();
+            const response = await fetch("/api/github");
+            if (!response.ok) {
+                throw new Error(`Load failed (${response.status})`);
+            }
+            const data = (await response.json()) as RepoProjectResult[];
+            projects = data;
         } catch (error) {
             loadError =
                 error instanceof Error

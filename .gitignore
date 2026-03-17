@@ -13,7 +13,10 @@ dist-ssr
 package-lock.json
 .vite
 *.local
+
 .env
+.wrangler
+.svelte-kit
 
 # Editor directories and files
 .vscode/*

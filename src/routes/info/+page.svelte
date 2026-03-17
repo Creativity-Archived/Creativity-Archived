@@ -1,5 +1,5 @@
 <script lang="ts">
-    import TopBar from "@src/core/components/topBar.svelte";
+    import TopBar from "@src/webpack/components/topBar.svelte";
 </script>
 
 <main>

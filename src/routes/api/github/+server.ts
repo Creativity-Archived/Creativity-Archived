@@ -1,24 +1,8 @@
-export interface ProjectItemProps {
-  imageUrl: string;
-  imageAlt: string;
-  bannerUrl: string;
-  readmeText: string;
-
-  title: string;
-  description: string;
-  madeBy: string;
-
-  madeByURL: string;
-  infoUrl: string;
-  downloadUrl: string;
-
-  githubUrl: string;
-  discordUrl: string;
-
-  openSource: string;
-  canMessWithSystem: string;
-  licenseUsed: string;
-}
+import { json } from "@sveltejs/kit";
+import type {
+  ProjectItemProps,
+  RepoProjectResult,
+} from "@src/lib/types/github";
 
 interface GitHubFile {
   name: string;
@@ -37,14 +21,6 @@ interface GitHubFile {
   };
 }
 
-export interface RepoProjectResult {
-  repoUrl: string;
-  repoName: string;
-  missing: string[];
-  project?: ProjectItemProps;
-  error?: string;
-}
-
 const REQUIRED_FILES = [
   "banner.png",
   "config.json",
@@ -52,9 +28,8 @@ const REQUIRED_FILES = [
   "readme.md",
 ] as const;
 const MARKER_DIR = ".creativity-archived";
-
-// Replace this with your raw list URL when ready.
-const DEFAULT_LIST_URL = "https://raw.githubusercontent.com/Creativity-Archived/.github/refs/heads/main/mods.txt";
+const DEFAULT_LIST_URL =
+  "https://raw.githubusercontent.com/Creativity-Archived/.github/refs/heads/main/mods.txt";
 
 type RepoParts = {
   owner: string;
@@ -82,7 +57,7 @@ type RawConfig = {
   madeByURL?: string;
 };
 
-function extractRepoUrls(text: string): string[] {
+const extractRepoUrls = (text: string): string[] => {
   const urls = new Set<string>();
   const regex = /https?:\/\/github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)/g;
 
@@ -94,9 +69,9 @@ function extractRepoUrls(text: string): string[] {
   }
 
   return Array.from(urls);
-}
+};
 
-function parseRepoUrl(repoUrl: string): RepoParts | null {
+const parseRepoUrl = (repoUrl: string): RepoParts | null => {
   try {
     const url = new URL(repoUrl);
     if (url.hostname !== "github.com") return null;
@@ -108,22 +83,25 @@ function parseRepoUrl(repoUrl: string): RepoParts | null {
   } catch {
     return null;
   }
-}
+};
 
-async function fetchRepoInfo(owner: string, repo: string): Promise<RepoInfo> {
+const fetchRepoInfo = async (
+  owner: string,
+  repo: string,
+): Promise<RepoInfo> => {
   const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch repo info (${response.status})`);
   }
   return (await response.json()) as RepoInfo;
-}
+};
 
-async function fetchContents(
+const fetchContents = async (
   owner: string,
   repo: string,
   path: string,
   branch: string,
-): Promise<GitHubFile[]> {
+): Promise<GitHubFile[]> => {
   const pathSegment = path ? `/${path}` : "";
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents${pathSegment}?ref=${branch}`,
@@ -136,16 +114,16 @@ async function fetchContents(
     return data;
   }
   throw new Error(`${path || "root"} is not a directory`);
-}
+};
 
-function buildProjectProps(
+const buildProjectProps = (
   config: Partial<ProjectItemProps>,
   repoUrl: string,
   repoName: string,
   logoUrl?: string,
   bannerUrl?: string,
   readmeText?: string,
-): ProjectItemProps {
+): ProjectItemProps => {
   return {
     imageUrl: config.imageUrl ?? logoUrl ?? "",
     imageAlt: config.imageAlt ?? config.title ?? repoName,
@@ -163,19 +141,19 @@ function buildProjectProps(
     canMessWithSystem: config.canMessWithSystem ?? "",
     licenseUsed: config.licenseUsed ?? "",
   };
-}
+};
 
-function normalizeYes(value?: string): boolean {
+const normalizeYes = (value?: string): boolean => {
   if (!value) return false;
   return value.trim().toLowerCase() === "yes";
-}
+};
 
-function normalizeNo(value?: string): boolean {
+const normalizeNo = (value?: string): boolean => {
   if (!value) return false;
   return value.trim().toLowerCase() === "no";
-}
+};
 
-function mapRawConfig(raw: RawConfig): Partial<ProjectItemProps> {
+const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
   const hasWebsite = normalizeYes(raw.hasWebsite);
   const hasGithub = normalizeYes(raw.hasGithub);
   const hasDiscord = normalizeYes(raw.hasDiscord);
@@ -205,9 +183,9 @@ function mapRawConfig(raw: RawConfig): Partial<ProjectItemProps> {
     canMessWithSystem,
     licenseUsed: raw.license ?? "",
   };
-}
+};
 
-async function validateRepo(repoUrl: string): Promise<RepoProjectResult> {
+const validateRepo = async (repoUrl: string): Promise<RepoProjectResult> => {
   const parsed = parseRepoUrl(repoUrl);
   if (!parsed) {
     return {
@@ -291,13 +269,11 @@ async function validateRepo(repoUrl: string): Promise<RepoProjectResult> {
       error: error instanceof Error ? error.message : "Unknown error",
     };
   }
-}
+};
 
-export async function fetchMods(
-  listUrl: string = DEFAULT_LIST_URL,
-): Promise<RepoProjectResult[]> {
+export const GET = async () => {
   try {
-    const response = await fetch(listUrl);
+    const response = await fetch(DEFAULT_LIST_URL);
     if (!response.ok) {
       throw new Error(`List fetch failed (${response.status})`);
     }
@@ -305,9 +281,10 @@ export async function fetchMods(
     const text = await response.text();
     const repoUrls = extractRepoUrls(text);
     const results = await Promise.all(repoUrls.map(validateRepo));
-    return results;
+    return json(results);
   } catch (error) {
-    console.error("Failed to fetch repo list:", error);
-    return [];
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch repo list.";
+    return json({ error: message }, { status: 500 });
   }
-}
+};

@@ -1,13 +1,21 @@
 <script lang="ts">
-    import TopBar from "@src/core/components/topBar.svelte";
-    import {
-        isValidGithubUrl,
-        submitModToDiscord,
-    } from "@src/core/api/webhook";
+    import TopBar from "@src/webpack/components/topBar.svelte";
 
     let modLink = "";
     let submitStatus = "";
     let isSubmitting = false;
+
+    const isValidGithubUrl = (url: string): boolean => {
+        try {
+            const parsed = new URL(url);
+            return (
+                parsed.hostname === "github.com" &&
+                parsed.pathname.split("/").filter(Boolean).length >= 2
+            );
+        } catch {
+            return false;
+        }
+    };
 
     const submitMod = async () => {
         submitStatus = "";
@@ -18,7 +26,18 @@
 
         isSubmitting = true;
         try {
-            await submitModToDiscord(modLink);
+            const response = await fetch("/api/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ modLink }),
+            });
+
+            if (!response.ok) {
+                const data = (await response.json()) as { error?: string };
+                throw new Error(data.error ?? "Failed to submit.");
+            }
             submitStatus = "Submitted successfully!";
             modLink = "";
         } catch (error) {
