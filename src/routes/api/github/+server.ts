@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import { env } from "$env/dynamic/private";
+import { GITHUB_API } from "$env/static/private";
 import type {
   ProjectItemProps,
   RepoProjectResult,
@@ -90,8 +90,8 @@ const buildGithubHeaders = (): Record<string, string> => {
     Accept: "application/vnd.github+json",
   };
 
-  if (env.GITHUB_API) {
-    headers.Authorization = `Bearer ${env.GITHUB_API}`;
+  if (GITHUB_API) {
+    headers.Authorization = `Bearer ${GITHUB_API}`;
   }
 
   return headers;
