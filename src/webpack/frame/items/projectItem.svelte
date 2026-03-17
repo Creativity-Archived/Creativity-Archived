@@ -10,7 +10,8 @@
 
     export let type = "";
     export let whatType = "";
-    
+    export let nsfw = "";
+
     export let madeByURL = "";
     export let infoUrl = "";
     export let downloadUrl = "";
@@ -92,6 +93,9 @@
             {#if whatType}
                 <Tag {whatType} />
             {/if}
+            {#if nsfw}
+                <Tag {nsfw} />
+            {/if}
         </section>
     </div>
 
@@ -159,6 +163,7 @@
     {licenseUsed}
     {type}
     {whatType}
+    {nsfw}
     {downloadUrl}
     {infoUrl}
     {discordUrl}
@@ -227,11 +232,11 @@
         display: flex;
         gap: 0;
         flex-direction: column;
-        
+
         -webkit-user-drag: none;
         user-select: none;
     }
-    
+
     /* OTHER THINGS */
     .icon {
         filter: invert(1);

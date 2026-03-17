@@ -4,6 +4,7 @@
     export let license: string;
     export let type: string;
     export let whatType: string;
+    export let nsfw: string;
 
     let tagStyle: String;
     let tag: String;
@@ -37,6 +38,14 @@
         tag = whatType.toUpperCase();
         tagStyle = "whatType";
     }
+
+    if (nsfw == "yes") {
+        tag = "NOT SAFE FOR WORK";
+        tagStyle = "yesNSFW";
+    } else if (nsfw == "no") {
+        tag = "SAFE FOR WORK";
+        tagStyle = "noNSFW";
+    }
 </script>
 
 <span class="tag {tagStyle}">
@@ -57,13 +66,19 @@
 
     .openSource {
         background-color: rgba(0, 150, 0, 1);
-    }.closedSource {
+    } .closedSource {
         background-color: rgba(150, 0, 0, 1);
+    }
+
+    .yesNSFW {
+        background-color: rgba(150, 0, 0, 1);
+    } .noNSFW {
+        background-color: rgba(0, 150, 0, 1);
     }
 
     .canMessSystem {
         background-color: rgba(150, 150, 0, 1);
-    }.canNotMessSystem {
+    } .canNotMessSystem {
         background-color: rgba(0, 150, 0, 1);
     }
 
@@ -74,7 +89,7 @@
 
     .type {
         background-color: rgba(120, 60, 180, 1);
-    }.whatType {
+    } .whatType {
         background-color: rgba(160, 80, 220, 1);
     }
 </style>

@@ -58,6 +58,8 @@ type RawConfig = {
   madeByURL?: string;
   type?: string;
   whatType?: string;
+  nsfw?: string;
+  NSFW?: string;
 };
 
 const extractRepoUrls = (text: string): string[] => {
@@ -174,6 +176,7 @@ const buildProjectProps = (
     licenseUsed: config.licenseUsed ?? "",
     type: config.type ?? "",
     whatType: config.whatType ?? "",
+    nsfw: config.nsfw ?? "",
   };
 };
 
@@ -218,6 +221,7 @@ const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
     licenseUsed: raw.license ?? "",
     type: raw.type ?? "",
     whatType: raw.whatType ?? "",
+    nsfw: raw.nsfw ?? raw.NSFW ?? "",
   };
 };
 

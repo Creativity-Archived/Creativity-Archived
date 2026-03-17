@@ -17,6 +17,7 @@
     export let licenseUsed = "";
     export let type = "";
     export let whatType = "";
+    export let nsfw = "";
     export let downloadUrl = "";
     export let infoUrl = "";
     export let discordUrl = "";
@@ -36,7 +37,10 @@
             <div class="body">
                 <div class="header">
                     <span class="title">{title}</span>
-                    <button class="actionButton" on:click={() => (open = false)}>
+                    <button
+                        class="actionButton"
+                        on:click={() => (open = false)}
+                    >
                         Close
                     </button>
                 </div>
@@ -80,17 +84,28 @@
                     {#if whatType}
                         <Tag {whatType} />
                     {/if}
+                    {#if nsfw}
+                        <Tag {nsfw} />
+                    {/if}
                 </div>
 
                 <div class="actions">
                     <div class="left">
                         {#if downloadUrl}
-                            <a class="actionButton" href={downloadUrl} target="_blank">
+                            <a
+                                class="actionButton"
+                                href={downloadUrl}
+                                target="_blank"
+                            >
                                 Download
                             </a>
                         {/if}
                         {#if infoUrl}
-                            <a class="actionButton" href={infoUrl} target="_blank">
+                            <a
+                                class="actionButton"
+                                href={infoUrl}
+                                target="_blank"
+                            >
                                 Info
                             </a>
                         {/if}

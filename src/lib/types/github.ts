@@ -6,6 +6,7 @@ export interface ProjectItemProps {
 
   type: string;
   whatType: string;
+  nsfw: string;
 
   title: string;
   description: string;

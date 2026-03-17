@@ -31,6 +31,7 @@
         licenseUsed: "",
         type: "",
         whatType: "",
+        nsfw: "",
     });
 
     onMount(async () => {
