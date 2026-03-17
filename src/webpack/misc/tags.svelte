@@ -7,7 +7,7 @@
     let tag:String;
     
     // If states lol!!!
-    if (openSource == "yes") {
+    if (openSource == "open") {
       tag = "OPEN SOURCE"
       tagStyle = "openSource"
     } else if (openSource == "closed") {
@@ -30,29 +30,35 @@
 </script>
 
 <span class="tag {tagStyle}">
-    [ {tag} ]
+    {tag}
 </span>
 
 <style>
     .tag {
-        color: rgba(60, 60, 60, 1);
+        background-color: rgba(60, 60, 60, 1);
         width: max-content;
         font-size: 10px;
+        
+        padding: 0 5px;
+        
+        user-select: none;
+        --webkit-user-select: none;
     }
     
     .openSource {
-        color: rgba(0, 150, 0, 1);
+        background-color: rgba(0, 150, 0, 1);
     } .closedSource {
-        color: rgba(150, 0, 0, 1);
+        background-color: rgba(150, 0, 0, 1);
     }
     
     .canMessSystem {
-        color: rgba(150, 150, 0, 1);
+        background-color: rgba(150, 150, 0, 1);
     } .canNotMessSystem {
-        color: rgba(0, 150, 0, 1);
+        background-color: rgba(0, 150, 0, 1);
     }
     
     .license {
-        color: rgba(200, 200, 200, 1);
+        background-color: rgba(200, 200, 200, 1);
+        color: rgba(50, 50, 50, 1);
     }
 </style>

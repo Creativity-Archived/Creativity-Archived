@@ -15,7 +15,7 @@
         
         padding: 5px;
 
-        transition: background-color 0.1s ease-in;
+        /*transition: background-color 0.1s ease-in;*/
         background-color: rgba(60, 60, 60, 1);
     }
 

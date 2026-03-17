@@ -3,7 +3,7 @@
     src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
 }
 
-:root {
+* {
     font-family: JetBrainsMono;
     color: white;
 }
@@ -14,4 +14,9 @@ body {
 
 a {
     color: aqua;
+}
+
+button {
+    border: none;
+    cursor: pointer;
 }
