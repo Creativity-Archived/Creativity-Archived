@@ -14,7 +14,7 @@
 
     <div class="right">
         <Redirect name="Home" goto="/" />
-        <Redirect name="Submit Mod" goto="/submit" />
+        <Redirect name="Submit" goto="/submit" />
         <Redirect name="Information" goto="/info" />
 
         <div class="overflow" on:click|stopPropagation>
