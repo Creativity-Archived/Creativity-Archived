@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import { GITHUB_API } from "$env/static/private";
+import type { RequestHandler } from "@sveltejs/kit";
 import type {
   ProjectItemProps,
   RepoProjectResult,
@@ -29,7 +29,8 @@ const REQUIRED_FILES = [
   "readme.md",
 ] as const;
 const MARKER_DIR = ".creativity-archived";
-const DEFAULT_LIST_URL = "https://raw.githubusercontent.com/Creativity-Archived/.github/refs/heads/main/mods.txt";
+const DEFAULT_LIST_URL =
+  "https://raw.githubusercontent.com/Creativity-Archived/.github/refs/heads/main/mods.txt";
 
 type RepoParts = {
   owner: string;
@@ -85,13 +86,13 @@ const parseRepoUrl = (repoUrl: string): RepoParts | null => {
   }
 };
 
-const buildGithubHeaders = (): Record<string, string> => {
+const buildGithubHeaders = (token?: string): Record<string, string> => {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
   };
 
-  if (GITHUB_API) {
-    headers.Authorization = `Bearer ${GITHUB_API}`;
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
   return headers;
@@ -100,11 +101,12 @@ const buildGithubHeaders = (): Record<string, string> => {
 const fetchRepoInfo = async (
   owner: string,
   repo: string,
+  token?: string,
 ): Promise<RepoInfo> => {
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}`,
     {
-      headers: buildGithubHeaders(),
+      headers: buildGithubHeaders(token),
     },
   );
   if (!response.ok) {
@@ -118,11 +120,12 @@ const fetchContents = async (
   repo: string,
   path: string,
   branch: string,
+  token?: string,
 ): Promise<GitHubFile[]> => {
   const pathSegment = path ? `/${path}` : "";
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents${pathSegment}?ref=${branch}`,
-    { headers: buildGithubHeaders() },
+    { headers: buildGithubHeaders(token) },
   );
   if (!response.ok) {
     throw new Error(`Missing ${path} (${response.status})`);
@@ -203,7 +206,10 @@ const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
   };
 };
 
-const validateRepo = async (repoUrl: string): Promise<RepoProjectResult> => {
+const validateRepo = async (
+  repoUrl: string,
+  token?: string,
+): Promise<RepoProjectResult> => {
   const parsed = parseRepoUrl(repoUrl);
   if (!parsed) {
     return {
@@ -218,9 +224,9 @@ const validateRepo = async (repoUrl: string): Promise<RepoProjectResult> => {
   const repoName = `${owner}/${repo}`;
 
   try {
-    const repoInfo = await fetchRepoInfo(owner, repo);
+    const repoInfo = await fetchRepoInfo(owner, repo, token);
     const branch = repoInfo.default_branch;
-    const rootContents = await fetchContents(owner, repo, "", branch);
+    const rootContents = await fetchContents(owner, repo, "", branch, token);
     const markerEntry = rootContents.find((file) => file.name === MARKER_DIR);
 
     let fileSource: GitHubFile[] = rootContents;
@@ -229,7 +235,7 @@ const validateRepo = async (repoUrl: string): Promise<RepoProjectResult> => {
     if (!markerEntry) {
       missing.push(MARKER_DIR);
     } else if (markerEntry.type === "dir") {
-      fileSource = await fetchContents(owner, repo, MARKER_DIR, branch);
+      fileSource = await fetchContents(owner, repo, MARKER_DIR, branch, token);
     }
 
     const names = new Set(fileSource.map((file) => file.name));
@@ -289,8 +295,9 @@ const validateRepo = async (repoUrl: string): Promise<RepoProjectResult> => {
   }
 };
 
-export const GET = async () => {
+export const GET: RequestHandler = async ({ platform }) => {
   try {
+    const token = platform?.env?.GITHUB_API as string | undefined;
     const response = await fetch(DEFAULT_LIST_URL);
     if (!response.ok) {
       throw new Error(`List fetch failed (${response.status})`);
@@ -298,7 +305,9 @@ export const GET = async () => {
 
     const text = await response.text();
     const repoUrls = extractRepoUrls(text);
-    const results = await Promise.all(repoUrls.map(validateRepo));
+    const results = await Promise.all(
+      repoUrls.map((repoUrl) => validateRepo(repoUrl, token)),
+    );
     return json(results);
   } catch (error) {
     const message =

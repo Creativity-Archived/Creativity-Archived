@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import { DISCORD_WEBHOOK } from "$env/static/private";
+import type { RequestHandler } from "@sveltejs/kit";
 
 const isValidGithubUrl = (url: string): boolean => {
   try {
@@ -13,18 +13,20 @@ const isValidGithubUrl = (url: string): boolean => {
   }
 };
 
-export const POST = async ({ request }: { request: Request }) => {
+export const POST: RequestHandler = async ({ request, platform }) => {
   const { modLink } = (await request.json()) as { modLink?: string };
 
   if (!modLink || !isValidGithubUrl(modLink)) {
     return json({ error: "Invalid GitHub URL." }, { status: 400 });
   }
 
-  if (!DISCORD_WEBHOOK) {
+  const webhookUrl = platform?.env?.DISCORD_WEBHOOK as string | undefined;
+
+  if (!webhookUrl) {
     return json({ error: "Webhook not configured." }, { status: 500 });
   }
 
-  const response = await fetch(DISCORD_WEBHOOK, {
+  const response = await fetch(webhookUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
