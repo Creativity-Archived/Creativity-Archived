@@ -55,6 +55,7 @@ type RawConfig = {
   githubURL?: string;
   discordURL?: string;
   websiteURL?: string;
+  downloadURL?: string;
   madeByURL?: string;
   type?: string;
   whatType?: string;
@@ -190,14 +191,17 @@ const normalizeNo = (value?: string): boolean => {
   return value.trim().toLowerCase() === "no";
 };
 
-const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
-  const hasWebsite = normalizeYes(raw.hasWebsite);
-  const hasGithub = normalizeYes(raw.hasGithub);
-  const hasDiscord = normalizeYes(raw.hasDiscord);
+const normalizeUrl = (value?: string): string => {
+  if (!value) return "";
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : "";
+};
 
-  const websiteUrl = hasWebsite ? (raw.websiteURL ?? "") : "";
-  const githubUrl = hasGithub ? (raw.githubURL ?? "") : "";
-  const discordUrl = hasDiscord ? (raw.discordURL ?? "") : "";
+const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
+  const websiteUrl = normalizeUrl(raw.websiteURL);
+  const githubUrl = normalizeUrl(raw.githubURL);
+  const discordUrl = normalizeUrl(raw.discordURL);
+  const downloadUrl = normalizeUrl(raw.downloadURL);
 
   let openSource = "";
   if (normalizeYes(raw.isOpenSource)) openSource = "open";
@@ -213,7 +217,7 @@ const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
     madeBy: raw.madeBy ?? "",
     madeByURL: raw.madeByURL ?? "",
     infoUrl: websiteUrl,
-    downloadUrl: normalizeYes(raw.isDownloadable) ? websiteUrl : "",
+    downloadUrl,
     githubUrl,
     discordUrl,
     openSource,
