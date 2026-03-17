@@ -4,6 +4,9 @@ export interface ProjectItemProps {
   bannerUrl: string;
   readmeText: string;
 
+  type: string;
+  whatType: string;
+
   title: string;
   description: string;
   madeBy: string;

@@ -8,6 +8,9 @@
     export let description = "";
     export let madeBy = "";
 
+    export let type = "";
+    export let whatType = "";
+    
     export let madeByURL = "";
     export let infoUrl = "";
     export let downloadUrl = "";
@@ -70,16 +73,26 @@
         </div>
     </div>
 
-    <div class="tags">
-        {#if openSource}
-            <Tag {openSource} />
-        {/if}
-        {#if canMessWithSystem}
-            <Tag messWithSystem={canMessWithSystem} />
-        {/if}
-        {#if licenseUsed}
-            <Tag license={licenseUsed} />
-        {/if}
+    <div class="tags flexInline">
+        <section>
+            {#if openSource}
+                <Tag {openSource} />
+            {/if}
+            {#if canMessWithSystem}
+                <Tag messWithSystem={canMessWithSystem} />
+            {/if}
+            {#if licenseUsed}
+                <Tag license={licenseUsed} />
+            {/if}
+        </section>
+        <section>
+            {#if type}
+                <Tag {type} />
+            {/if}
+            {#if whatType}
+                <Tag {whatType} />
+            {/if}
+        </section>
     </div>
 
     <!-- <div class="bottom">
@@ -144,6 +157,8 @@
     {openSource}
     {canMessWithSystem}
     {licenseUsed}
+    {type}
+    {whatType}
     {downloadUrl}
     {infoUrl}
     {discordUrl}
@@ -208,6 +223,15 @@
         margin-left: auto;
     }
 
+    .flexInline {
+        display: flex;
+        gap: 0;
+        flex-direction: column;
+        
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+    
     /* OTHER THINGS */
     .icon {
         filter: invert(1);

@@ -29,6 +29,8 @@
         openSource: "",
         canMessWithSystem: "",
         licenseUsed: "",
+        type: "",
+        whatType: "",
     });
 
     onMount(async () => {

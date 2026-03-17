@@ -15,6 +15,8 @@
     export let openSource = "";
     export let canMessWithSystem = "";
     export let licenseUsed = "";
+    export let type = "";
+    export let whatType = "";
     export let downloadUrl = "";
     export let infoUrl = "";
     export let discordUrl = "";
@@ -72,6 +74,12 @@
                     {#if licenseUsed}
                         <Tag license={licenseUsed} />
                     {/if}
+                    {#if type}
+                        <Tag {type} />
+                    {/if}
+                    {#if whatType}
+                        <Tag {whatType} />
+                    {/if}
                 </div>
 
                 <div class="actions">
@@ -82,7 +90,9 @@
                             </a>
                         {/if}
                         {#if infoUrl}
-                            <a class="actionButton" href={infoUrl} target="_blank">Info</a>
+                            <a class="actionButton" href={infoUrl} target="_blank">
+                                Info
+                            </a>
                         {/if}
                     </div>
                     <div class="right">
@@ -164,7 +174,7 @@
         height: 140px;
         object-fit: cover;
         display: block;
-        
+
         -webkit-user-drag: none;
         user-select: none;
     }
@@ -233,7 +243,7 @@
         width: 64px;
         height: 64px;
         object-fit: contain;
-        
+
         -webkit-user-drag: none;
         user-select: none;
     }
@@ -301,10 +311,11 @@
         text-decoration: none;
         padding: 4px 8px;
         font-size: 12px;
-        
+
         -webkit-user-drag: none;
         user-select: none;
-    } .actionButton:hover {
+    }
+    .actionButton:hover {
         background-color: rgba(70, 70, 70, 1);
     }
 

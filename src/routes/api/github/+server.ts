@@ -56,6 +56,8 @@ type RawConfig = {
   discordURL?: string;
   websiteURL?: string;
   madeByURL?: string;
+  type?: string;
+  whatType?: string;
 };
 
 const extractRepoUrls = (text: string): string[] => {
@@ -170,6 +172,8 @@ const buildProjectProps = (
     openSource: config.openSource ?? "",
     canMessWithSystem: config.canMessWithSystem ?? "",
     licenseUsed: config.licenseUsed ?? "",
+    type: config.type ?? "",
+    whatType: config.whatType ?? "",
   };
 };
 
@@ -212,6 +216,8 @@ const mapRawConfig = (raw: RawConfig): Partial<ProjectItemProps> => {
     openSource,
     canMessWithSystem,
     licenseUsed: raw.license ?? "",
+    type: raw.type ?? "",
+    whatType: raw.whatType ?? "",
   };
 };
 
