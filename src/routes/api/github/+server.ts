@@ -89,6 +89,8 @@ const parseRepoUrl = (repoUrl: string): RepoParts | null => {
 const buildGithubHeaders = (token?: string): Record<string, string> => {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
+    "User-Agent": "Creativity-Archived",
+    "X-GitHub-Api-Version": "2022-11-28",
   };
 
   if (token) {
@@ -110,7 +112,14 @@ const fetchRepoInfo = async (
     },
   );
   if (!response.ok) {
-    throw new Error(`Failed to fetch repo info (${response.status})`);
+    let details = "";
+    try {
+      const data = (await response.json()) as { message?: string };
+      if (data?.message) details = `: ${data.message}`;
+    } catch {
+      // ignore body parse errors
+    }
+    throw new Error(`Failed to fetch repo info (${response.status})${details}`);
   }
   return (await response.json()) as RepoInfo;
 };
