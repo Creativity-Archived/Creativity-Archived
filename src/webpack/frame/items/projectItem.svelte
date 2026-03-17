@@ -29,6 +29,7 @@
 
     import Tag from "@src/webpack/misc/tags.svelte";
     import PopupModule from "@src/webpack/frame/popupModule.svelte";
+    export let compactMode = false;
 
     const requiredFiles = [
         ".creativity-archived",
@@ -74,7 +75,7 @@
         </div>
     </div>
 
-    <div class="tags flexInline">
+    <div class="tags flexInline" class:compactMode>
         <section>
             {#if openSource}
                 <Tag {openSource} />
@@ -203,6 +204,15 @@
         display: flex;
         gap: 6px;
         margin-top: 6px;
+    }
+
+    .compactMode {
+        visibility: hidden;
+        height: 0;
+        overflow: hidden;
+    } .mainItem:hover .compactMode {
+        visibility: visible;
+        height: auto;
     }
 
     /* MAIN ITEM BOTTOM */

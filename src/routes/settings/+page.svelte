@@ -1,27 +1,6 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { browser } from "$app/environment";
     import Topbar from "@src/webpack/components/topBar.svelte";
-
-    const nsfwStorageKey = "showNsfw";
-    let showNsfw = "off";
-    let hasLoaded = false;
-
-    onMount(() => {
-        if (!browser) return;
-        const saved = localStorage.getItem(nsfwStorageKey);
-        if (saved === "on" || saved === "off") {
-            showNsfw = saved;
-        }
-        hasLoaded = true;
-    });
-
-    const updateStorage = (value: string) => {
-        if (!browser) return;
-        localStorage.setItem(nsfwStorageKey, value);
-    };
-
-    $: if (hasLoaded) updateStorage(showNsfw);
+    import { showNsfw, compactMode } from "$lib/stores/settings";
 </script>
 
 <main>
@@ -31,7 +10,16 @@
         <div class="mainItem">
             <span class="bigText">Show NSFW</span>
             <p>Enable NSFW content in the main page.</p>
-            <select bind:value={showNsfw}>
+            <select bind:value={$showNsfw}>
+                <option value="off">Off</option>
+                <option value="on">On</option>
+            </select>
+        </div>
+
+        <div class="mainItem">
+            <span class="bigText">Compact Mode</span>
+            <p>Hides the tags unless you hover over the project.</p>
+            <select bind:value={$compactMode}>
                 <option value="off">Off</option>
                 <option value="on">On</option>
             </select>

@@ -1,19 +1,17 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { browser } from "$app/environment";
     import TopBar from "@src/webpack/components/topBar.svelte";
     import ProjectItem from "@src/webpack/frame/items/projectItem.svelte";
+    import { showNsfw, compactMode } from "$lib/stores/settings";
     import type {
         RepoProjectResult,
         ProjectItemProps,
     } from "@src/lib/types/github";
 
-    const nsfwStorageKey = "showNsfw";
     let projects: RepoProjectResult[] = [];
     let visibleProjects: RepoProjectResult[] = [];
     let loading = true;
     let loadError = "";
-    let showNsfw = false;
 
     const fallbackProject = (project: RepoProjectResult): ProjectItemProps => ({
         imageUrl: "",
@@ -39,10 +37,6 @@
     });
 
     onMount(async () => {
-        if (browser) {
-            showNsfw = localStorage.getItem(nsfwStorageKey) === "on";
-        }
-
         try {
             const response = await fetch("/api/github");
             if (!response.ok) {
@@ -60,7 +54,7 @@
         }
     });
 
-    $: visibleProjects = showNsfw
+    $: visibleProjects = $showNsfw
         ? projects
         : projects.filter((project) => project.project?.nsfw !== "yes");
 </script>
@@ -82,6 +76,7 @@
                     repoUrl={project.repoUrl}
                     validationMissing={project.missing}
                     validationError={project.error ?? null}
+                    compactMode={$compactMode}
                 />
             {/each}
         {/if}
