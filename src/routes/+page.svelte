@@ -54,9 +54,10 @@
         }
     });
 
-    $: visibleProjects = $showNsfw
-        ? projects
-        : projects.filter((project) => project.project?.nsfw !== "yes");
+    $: visibleProjects =
+        $showNsfw === "on"
+            ? projects
+            : projects.filter((project) => project.project?.nsfw !== "yes");
 </script>
 
 <main>
@@ -76,7 +77,7 @@
                     repoUrl={project.repoUrl}
                     validationMissing={project.missing}
                     validationError={project.error ?? null}
-                    compactMode={$compactMode}
+                    compactMode={$compactMode === "on"}
                 />
             {/each}
         {/if}
